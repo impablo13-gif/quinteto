@@ -1,0 +1,636 @@
+{
+  "formato": "quinteto-partido",
+  "version": 1,
+  "equipo": "Club Demo",
+  "partido": {
+    "date": "2026-10-18T16:00:00.000Z",
+    "rivalName": "Atletico Ejemplo",
+    "teamGoals": 5,
+    "rivalScore": 3,
+    "halfLength": 20,
+    "venue": "Pabellon Municipal",
+    "startTime": "18:00",
+    "players": [
+      {
+        "id": "p1",
+        "name": "Portero Uno",
+        "number": 1,
+        "position": "POR",
+        "isGK": true,
+        "seconds": 2400,
+        "goals": 0,
+        "assists": 0,
+        "fouls": 0,
+        "foulsReceived": 0,
+        "yellow": 0,
+        "red": 0,
+        "saves": 5,
+        "turnovers": 0,
+        "recoveries": 0,
+        "shotsOn": 0,
+        "shotsOff": 0,
+        "shotsPost": 0
+      },
+      {
+        "id": "p13",
+        "name": "Portero Dos",
+        "number": 13,
+        "position": "POR",
+        "isGK": true,
+        "seconds": 0,
+        "goals": 0,
+        "assists": 0,
+        "fouls": 0,
+        "foulsReceived": 0,
+        "yellow": 0,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 0,
+        "recoveries": 0,
+        "shotsOn": 0,
+        "shotsOff": 0,
+        "shotsPost": 0
+      },
+      {
+        "id": "p4",
+        "name": "Cierre Cuatro",
+        "number": 4,
+        "position": "CIE",
+        "isGK": false,
+        "seconds": 1020,
+        "goals": 0,
+        "assists": 0,
+        "fouls": 2,
+        "foulsReceived": 0,
+        "yellow": 0,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 0,
+        "recoveries": 1,
+        "shotsOn": 0,
+        "shotsOff": 0,
+        "shotsPost": 0
+      },
+      {
+        "id": "p5",
+        "name": "Cierre Cinco",
+        "number": 5,
+        "position": "CIE",
+        "isGK": false,
+        "seconds": 1380,
+        "goals": 0,
+        "assists": 1,
+        "fouls": 3,
+        "foulsReceived": 0,
+        "yellow": 0,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 0,
+        "recoveries": 0,
+        "shotsOn": 1,
+        "shotsOff": 0,
+        "shotsPost": 0
+      },
+      {
+        "id": "p7",
+        "name": "Ala Siete",
+        "number": 7,
+        "position": "ALA",
+        "isGK": false,
+        "seconds": 1200,
+        "goals": 0,
+        "assists": 1,
+        "fouls": 0,
+        "foulsReceived": 0,
+        "yellow": 0,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 1,
+        "recoveries": 0,
+        "shotsOn": 0,
+        "shotsOff": 1,
+        "shotsPost": 0
+      },
+      {
+        "id": "p8",
+        "name": "Ala Ocho",
+        "number": 8,
+        "position": "ALA",
+        "isGK": false,
+        "seconds": 1080,
+        "goals": 1,
+        "assists": 0,
+        "fouls": 0,
+        "foulsReceived": 1,
+        "yellow": 0,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 0,
+        "recoveries": 1,
+        "shotsOn": 1,
+        "shotsOff": 0,
+        "shotsPost": 0
+      },
+      {
+        "id": "p10",
+        "name": "Ala Diez",
+        "number": 10,
+        "position": "ALA",
+        "isGK": false,
+        "seconds": 1320,
+        "goals": 1,
+        "assists": 0,
+        "fouls": 0,
+        "foulsReceived": 1,
+        "yellow": 0,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 1,
+        "recoveries": 0,
+        "shotsOn": 0,
+        "shotsOff": 1,
+        "shotsPost": 0
+      },
+      {
+        "id": "p11",
+        "name": "Ala Once",
+        "number": 11,
+        "position": "ALA",
+        "isGK": false,
+        "seconds": 1020,
+        "goals": 0,
+        "assists": 1,
+        "fouls": 2,
+        "foulsReceived": 0,
+        "yellow": 2,
+        "red": 1,
+        "saves": 0,
+        "turnovers": 1,
+        "recoveries": 1,
+        "shotsOn": 0,
+        "shotsOff": 0,
+        "shotsPost": 0
+      },
+      {
+        "id": "p9",
+        "name": "Pivot Nueve",
+        "number": 9,
+        "position": "PIV",
+        "isGK": false,
+        "seconds": 1440,
+        "goals": 1,
+        "assists": 0,
+        "fouls": 0,
+        "foulsReceived": 0,
+        "yellow": 0,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 1,
+        "recoveries": 0,
+        "shotsOn": 1,
+        "shotsOff": 0,
+        "shotsPost": 0
+      },
+      {
+        "id": "p14",
+        "name": "Pivot Catorce",
+        "number": 14,
+        "position": "PIV",
+        "isGK": false,
+        "seconds": 960,
+        "goals": 1,
+        "assists": 0,
+        "fouls": 0,
+        "foulsReceived": 0,
+        "yellow": 0,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 0,
+        "recoveries": 1,
+        "shotsOn": 0,
+        "shotsOff": 0,
+        "shotsPost": 1
+      },
+      {
+        "id": "p6",
+        "name": "Ala Seis",
+        "number": 6,
+        "position": "ALA",
+        "isGK": false,
+        "seconds": 49,
+        "goals": 0,
+        "assists": 0,
+        "fouls": 0,
+        "foulsReceived": 0,
+        "yellow": 0,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 0,
+        "recoveries": 0,
+        "shotsOn": 1,
+        "shotsOff": 0,
+        "shotsPost": 0
+      },
+      {
+        "id": "p3",
+        "name": "Cierre Tres",
+        "number": 3,
+        "position": "CIE",
+        "isGK": false,
+        "seconds": 0,
+        "goals": 0,
+        "assists": 0,
+        "fouls": 0,
+        "foulsReceived": 0,
+        "yellow": 0,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 0,
+        "recoveries": 0,
+        "shotsOn": 0,
+        "shotsOff": 0,
+        "shotsPost": 0
+      }
+    ],
+    "goalEvents": [
+      {
+        "id": "g1",
+        "type": "for",
+        "authorId": "p9",
+        "authorName": "Pivot Nueve",
+        "ownGoal": false,
+        "assistId": "p7",
+        "assistName": "Ala Siete",
+        "phase": "Ataque Posicional",
+        "zone": "f5-centro",
+        "half": 1,
+        "remaining": 1015,
+        "onCourt": [
+          {
+            "id": "p1",
+            "name": "Portero Uno",
+            "number": 1
+          },
+          {
+            "id": "p4",
+            "name": "Cierre Cuatro",
+            "number": 4
+          },
+          {
+            "id": "p7",
+            "name": "Ala Siete",
+            "number": 7
+          },
+          {
+            "id": "p10",
+            "name": "Ala Diez",
+            "number": 10
+          },
+          {
+            "id": "p9",
+            "name": "Pivot Nueve",
+            "number": 9
+          }
+        ]
+      },
+      {
+        "id": "g2",
+        "type": "against",
+        "authorId": null,
+        "authorName": null,
+        "ownGoal": false,
+        "assistId": null,
+        "assistName": null,
+        "phase": "Transición",
+        "zone": null,
+        "half": 1,
+        "remaining": 688,
+        "onCourt": [
+          {
+            "id": "p1",
+            "name": "Portero Uno",
+            "number": 1
+          },
+          {
+            "id": "p10",
+            "name": "Ala Diez",
+            "number": 10
+          },
+          {
+            "id": "p14",
+            "name": "Pivot Catorce",
+            "number": 14
+          },
+          {
+            "id": "p5",
+            "name": "Cierre Cinco",
+            "number": 5
+          },
+          {
+            "id": "p8",
+            "name": "Ala Ocho",
+            "number": 8
+          }
+        ]
+      },
+      {
+        "id": "g3",
+        "type": "for",
+        "authorId": "p14",
+        "authorName": "Pivot Catorce",
+        "ownGoal": false,
+        "assistId": "p5",
+        "assistName": "Cierre Cinco",
+        "phase": "Recuperación",
+        "zone": "f4-izq",
+        "half": 1,
+        "remaining": 499,
+        "onCourt": [
+          {
+            "id": "p1",
+            "name": "Portero Uno",
+            "number": 1
+          },
+          {
+            "id": "p14",
+            "name": "Pivot Catorce",
+            "number": 14
+          },
+          {
+            "id": "p5",
+            "name": "Cierre Cinco",
+            "number": 5
+          },
+          {
+            "id": "p8",
+            "name": "Ala Ocho",
+            "number": 8
+          },
+          {
+            "id": "p11",
+            "name": "Ala Once",
+            "number": 11
+          }
+        ]
+      },
+      {
+        "id": "g4",
+        "type": "for",
+        "authorId": null,
+        "authorName": null,
+        "ownGoal": true,
+        "assistId": null,
+        "assistName": null,
+        "phase": "En propia",
+        "zone": null,
+        "half": 1,
+        "remaining": 70,
+        "onCourt": [
+          {
+            "id": "p1",
+            "name": "Portero Uno",
+            "number": 1
+          },
+          {
+            "id": "p5",
+            "name": "Cierre Cinco",
+            "number": 5
+          },
+          {
+            "id": "p11",
+            "name": "Ala Once",
+            "number": 11
+          },
+          {
+            "id": "p9",
+            "name": "Pivot Nueve",
+            "number": 9
+          },
+          {
+            "id": "p7",
+            "name": "Ala Siete",
+            "number": 7
+          }
+        ]
+      },
+      {
+        "id": "g5",
+        "type": "for",
+        "authorId": "p8",
+        "authorName": "Ala Ocho",
+        "ownGoal": false,
+        "assistId": null,
+        "assistName": null,
+        "phase": "ABP",
+        "zone": "f6-centro",
+        "half": 2,
+        "remaining": 1105,
+        "onCourt": [
+          {
+            "id": "p1",
+            "name": "Portero Uno",
+            "number": 1
+          },
+          {
+            "id": "p4",
+            "name": "Cierre Cuatro",
+            "number": 4
+          },
+          {
+            "id": "p7",
+            "name": "Ala Siete",
+            "number": 7
+          },
+          {
+            "id": "p8",
+            "name": "Ala Ocho",
+            "number": 8
+          },
+          {
+            "id": "p9",
+            "name": "Pivot Nueve",
+            "number": 9
+          }
+        ]
+      },
+      {
+        "id": "g6",
+        "type": "against",
+        "authorId": null,
+        "authorName": null,
+        "ownGoal": false,
+        "assistId": null,
+        "assistName": null,
+        "phase": "5x4",
+        "zone": null,
+        "half": 2,
+        "remaining": 560,
+        "onCourt": [
+          {
+            "id": "p1",
+            "name": "Portero Uno",
+            "number": 1
+          },
+          {
+            "id": "p14",
+            "name": "Pivot Catorce",
+            "number": 14
+          },
+          {
+            "id": "p10",
+            "name": "Ala Diez",
+            "number": 10
+          },
+          {
+            "id": "p5",
+            "name": "Cierre Cinco",
+            "number": 5
+          },
+          {
+            "id": "p11",
+            "name": "Ala Once",
+            "number": 11
+          }
+        ]
+      },
+      {
+        "id": "g7",
+        "type": "for",
+        "authorId": "p10",
+        "authorName": "Ala Diez",
+        "ownGoal": false,
+        "assistId": "p11",
+        "assistName": "Ala Once",
+        "phase": "Incorporación",
+        "zone": "def-centro",
+        "half": 2,
+        "remaining": 298,
+        "onCourt": [
+          {
+            "id": "p1",
+            "name": "Portero Uno",
+            "number": 1
+          },
+          {
+            "id": "p10",
+            "name": "Ala Diez",
+            "number": 10
+          },
+          {
+            "id": "p5",
+            "name": "Cierre Cinco",
+            "number": 5
+          },
+          {
+            "id": "p11",
+            "name": "Ala Once",
+            "number": 11
+          },
+          {
+            "id": "p9",
+            "name": "Pivot Nueve",
+            "number": 9
+          }
+        ]
+      },
+      {
+        "id": "g8",
+        "type": "against",
+        "authorId": null,
+        "authorName": null,
+        "ownGoal": false,
+        "assistId": null,
+        "assistName": null,
+        "phase": "10M (Doble penalti)",
+        "zone": null,
+        "half": 2,
+        "remaining": 50,
+        "onCourt": [
+          {
+            "id": "p1",
+            "name": "Portero Uno",
+            "number": 1
+          },
+          {
+            "id": "p10",
+            "name": "Ala Diez",
+            "number": 10
+          },
+          {
+            "id": "p5",
+            "name": "Cierre Cinco",
+            "number": 5
+          },
+          {
+            "id": "p9",
+            "name": "Pivot Nueve",
+            "number": 9
+          }
+        ]
+      }
+    ],
+    "convocados": [
+      {
+        "id": "p1",
+        "name": "Portero Uno",
+        "number": 1
+      },
+      {
+        "id": "p13",
+        "name": "Portero Dos",
+        "number": 13
+      },
+      {
+        "id": "p4",
+        "name": "Cierre Cuatro",
+        "number": 4
+      },
+      {
+        "id": "p5",
+        "name": "Cierre Cinco",
+        "number": 5
+      },
+      {
+        "id": "p7",
+        "name": "Ala Siete",
+        "number": 7
+      },
+      {
+        "id": "p8",
+        "name": "Ala Ocho",
+        "number": 8
+      },
+      {
+        "id": "p10",
+        "name": "Ala Diez",
+        "number": 10
+      },
+      {
+        "id": "p11",
+        "name": "Ala Once",
+        "number": 11
+      },
+      {
+        "id": "p9",
+        "name": "Pivot Nueve",
+        "number": 9
+      },
+      {
+        "id": "p14",
+        "name": "Pivot Catorce",
+        "number": 14
+      },
+      {
+        "id": "p6",
+        "name": "Ala Seis",
+        "number": 6
+      },
+      {
+        "id": "p3",
+        "name": "Cierre Tres",
+        "number": 3
+      }
+    ],
+    "reportGeneratedAt": "2026-10-18T18:00:00.000Z"
+  }
+}

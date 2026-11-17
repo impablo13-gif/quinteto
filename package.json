@@ -1,0 +1,30 @@
+{
+  "name": "quinteto",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Quinteto: minutos y estadisticas de futbol sala en directo. PWA instalable, funciona sin conexion.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "test": "node --test tests/zonas.test.js tests/jugadores.test.js tests/ficha.test.js tests/analisis.test.js tests/memoria.test.js tests/balance.test.js tests/golden.test.js tests/formatos.test.js tests/despersonalizacion.test.js tests/tokens.test.js tests/lastRecord.test.js tests/informe.test.js tests/config.test.js tests/fase8.test.js",
+    "preview": "vite preview --host",
+    "icons": "node tools/make-icons.mjs"
+  },
+  "dependencies": {
+    "@fontsource/barlow-condensed": "^5.3.0",
+    "@fontsource/inter": "^5.3.0",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^4.2.1",
+    "lucide-react": "^1.31.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz",
+    "xlsx-js-style": "^1.2.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.5",
+    "vite": "^8.2.1",
+    "vite-plugin-pwa": "^1.3.0"
+  }
+}

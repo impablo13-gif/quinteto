@@ -1,0 +1,21 @@
+{
+  "formato": "quinteto-copia",
+  "version": 1,
+  "app": "Quinteto",
+  "claves": [
+    "matches:team-demo:2026-08-14T07:43:12.637Z",
+    "matches:team-demo:2026-10-18T16:00:00.000Z",
+    "matches:team-demo:2026-11-08T11:00:00.000Z",
+    "roster:team-demo",
+    "seasonnote:team-demo",
+    "teams"
+  ],
+  "resumen": {
+    "equipos": [
+      "Club Demo"
+    ],
+    "partidos": 3,
+    "entrenos": 0,
+    "jugadores": 12
+  }
+}

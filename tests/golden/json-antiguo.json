@@ -1,0 +1,349 @@
+{
+  "formato": "quinteto-partido",
+  "version": 1,
+  "equipo": "Club Demo",
+  "partido": {
+    "date": "2026-08-14T07:43:12.637Z",
+    "rivalName": "Rival Antiguo",
+    "teamGoals": 2,
+    "rivalScore": 1,
+    "halfLength": 20,
+    "venue": "",
+    "startTime": "09:40",
+    "players": [
+      {
+        "name": "Portero Uno",
+        "number": 1,
+        "position": "POR",
+        "isGK": true,
+        "seconds": 2400,
+        "goals": 0,
+        "assists": 0,
+        "fouls": 0,
+        "yellow": 0,
+        "red": 0,
+        "saves": 4,
+        "turnovers": 0,
+        "recoveries": 0,
+        "shotsOn": 0,
+        "shotsOff": 0
+      },
+      {
+        "name": "Portero Dos",
+        "number": 13,
+        "position": "POR",
+        "isGK": true,
+        "seconds": 0,
+        "goals": 0,
+        "assists": 0,
+        "fouls": 0,
+        "yellow": 0,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 0,
+        "recoveries": 0,
+        "shotsOn": 0,
+        "shotsOff": 0
+      },
+      {
+        "name": "Cierre Cuatro",
+        "number": 4,
+        "position": "CIE",
+        "isGK": false,
+        "seconds": 1700,
+        "goals": 0,
+        "assists": 1,
+        "fouls": 1,
+        "yellow": 0,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 0,
+        "recoveries": 0,
+        "shotsOn": 0,
+        "shotsOff": 0
+      },
+      {
+        "name": "Cierre Cinco",
+        "number": 5,
+        "position": "CIE",
+        "isGK": false,
+        "seconds": 1500,
+        "goals": 0,
+        "assists": 0,
+        "fouls": 1,
+        "yellow": 1,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 0,
+        "recoveries": 0,
+        "shotsOn": 0,
+        "shotsOff": 0
+      },
+      {
+        "name": "Ala Siete",
+        "number": 7,
+        "position": "ALA",
+        "isGK": false,
+        "seconds": 1300,
+        "goals": 1,
+        "assists": 0,
+        "fouls": 0,
+        "yellow": 0,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 0,
+        "recoveries": 0,
+        "shotsOn": 0,
+        "shotsOff": 0
+      },
+      {
+        "name": "Ala Ocho",
+        "number": 8,
+        "position": "ALA",
+        "isGK": false,
+        "seconds": 1250,
+        "goals": 0,
+        "assists": 0,
+        "fouls": 0,
+        "yellow": 0,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 0,
+        "recoveries": 0,
+        "shotsOn": 0,
+        "shotsOff": 0
+      },
+      {
+        "name": "Ala Diez",
+        "number": 10,
+        "position": "ALA",
+        "isGK": false,
+        "seconds": 1200,
+        "goals": 0,
+        "assists": 0,
+        "fouls": 0,
+        "yellow": 0,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 0,
+        "recoveries": 0,
+        "shotsOn": 0,
+        "shotsOff": 0
+      },
+      {
+        "name": "Ala Once",
+        "number": 11,
+        "position": "ALA",
+        "isGK": false,
+        "seconds": 1100,
+        "goals": 0,
+        "assists": 0,
+        "fouls": 1,
+        "yellow": 0,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 0,
+        "recoveries": 0,
+        "shotsOn": 0,
+        "shotsOff": 0
+      },
+      {
+        "name": "Pivot Nueve",
+        "number": 9,
+        "position": "PIV",
+        "isGK": false,
+        "seconds": 900,
+        "goals": 1,
+        "assists": 0,
+        "fouls": 0,
+        "yellow": 0,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 0,
+        "recoveries": 0,
+        "shotsOn": 0,
+        "shotsOff": 0
+      },
+      {
+        "name": "Pivot Catorce",
+        "number": 14,
+        "position": "PIV",
+        "isGK": false,
+        "seconds": 650,
+        "goals": 0,
+        "assists": 0,
+        "fouls": 0,
+        "yellow": 0,
+        "red": 0,
+        "saves": 0,
+        "turnovers": 0,
+        "recoveries": 0,
+        "shotsOn": 0,
+        "shotsOff": 0
+      }
+    ],
+    "goalEvents": [
+      {
+        "id": "g1786693302348",
+        "type": "for",
+        "authorId": "p7",
+        "authorName": "Ala Siete",
+        "phase": "Transición",
+        "half": 1,
+        "remaining": 700,
+        "onCourt": [
+          {
+            "id": "p1",
+            "name": "Portero Uno",
+            "number": 1
+          },
+          {
+            "id": "p4",
+            "name": "Cierre Cuatro",
+            "number": 4
+          },
+          {
+            "id": "p7",
+            "name": "Ala Siete",
+            "number": 7
+          },
+          {
+            "id": "p8",
+            "name": "Ala Ocho",
+            "number": 8
+          },
+          {
+            "id": "p9",
+            "name": "Pivot Nueve",
+            "number": 9
+          }
+        ]
+      },
+      {
+        "id": "g1786693307648",
+        "type": "against",
+        "authorId": null,
+        "authorName": null,
+        "phase": "5x4",
+        "half": 2,
+        "remaining": 900,
+        "onCourt": [
+          {
+            "id": "p1",
+            "name": "Portero Uno",
+            "number": 1
+          },
+          {
+            "id": "p5",
+            "name": "Cierre Cinco",
+            "number": 5
+          },
+          {
+            "id": "p10",
+            "name": "Ala Diez",
+            "number": 10
+          },
+          {
+            "id": "p11",
+            "name": "Ala Once",
+            "number": 11
+          },
+          {
+            "id": "p9",
+            "name": "Pivot Nueve",
+            "number": 9
+          }
+        ]
+      },
+      {
+        "id": "g1786693308200",
+        "type": "for",
+        "authorId": "p9",
+        "authorName": "Pivot Nueve",
+        "phase": "Ataque Posicional",
+        "half": 2,
+        "remaining": 300,
+        "onCourt": [
+          {
+            "id": "p1",
+            "name": "Portero Uno",
+            "number": 1
+          },
+          {
+            "id": "p4",
+            "name": "Cierre Cuatro",
+            "number": 4
+          },
+          {
+            "id": "p7",
+            "name": "Ala Siete",
+            "number": 7
+          },
+          {
+            "id": "p8",
+            "name": "Ala Ocho",
+            "number": 8
+          },
+          {
+            "id": "p9",
+            "name": "Pivot Nueve",
+            "number": 9
+          }
+        ]
+      }
+    ],
+    "convocados": [
+      {
+        "id": "p1",
+        "name": "Portero Uno",
+        "number": 1
+      },
+      {
+        "id": "p13",
+        "name": "Portero Dos",
+        "number": 13
+      },
+      {
+        "id": "p4",
+        "name": "Cierre Cuatro",
+        "number": 4
+      },
+      {
+        "id": "p5",
+        "name": "Cierre Cinco",
+        "number": 5
+      },
+      {
+        "id": "p7",
+        "name": "Ala Siete",
+        "number": 7
+      },
+      {
+        "id": "p8",
+        "name": "Ala Ocho",
+        "number": 8
+      },
+      {
+        "id": "p10",
+        "name": "Ala Diez",
+        "number": 10
+      },
+      {
+        "id": "p11",
+        "name": "Ala Once",
+        "number": 11
+      },
+      {
+        "id": "p9",
+        "name": "Pivot Nueve",
+        "number": 9
+      },
+      {
+        "id": "p14",
+        "name": "Pivot Catorce",
+        "number": 14
+      }
+    ],
+    "reportGeneratedAt": "<hora de exportacion>"
+  }
+}
