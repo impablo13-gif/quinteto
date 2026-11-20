@@ -10,6 +10,7 @@ import { SeasonAnalysisView } from "./SeasonAnalysisView.jsx";
 import { SeasonPlayersView } from "./SeasonPlayersView.jsx";
 import { SeasonZonesView } from "./SeasonZonesView.jsx";
 import { HeadToHead, MatchFilters } from "./MatchFilters.jsx";
+import { MatchReportsView } from "./MatchReportsView.jsx";
 import { ALL, NO_COMPETITION, filterMatches } from "../../domain/filters.js";
 export function HistoryView({ matches: allMatches, trainings, teamId, teamName, teamCrest, teamColors, rosterPlayers, subTab, onSubTabChange, onExport, onDeleteMatch, onCreateReport, onEditGoal, onNewTraining }) {
   const [open, setOpen] = useState(null);
@@ -31,7 +32,7 @@ export function HistoryView({ matches: allMatches, trainings, teamId, teamName, 
       right: total > 0 && <Button size="sm" variant="ghost" icon={FileSpreadsheet} onClick={onExport}>Exportar a Excel</Button>,
     },
     jugadores: { title: "Jugadores", subtitle: "Totales por periodo, ficha de cada jugador y conclusiones" },
-    analisis: { title: "Análisis", subtitle: "Temporada, fases de gol y mapa de zonas" },
+    analisis: { title: "Análisis", subtitle: "Temporada, fases de gol, mapa de zonas e informes de cada partido" },
     entrenos: {
       title: "Entrenos",
       subtitle: `${trainings.length} sesión${trainings.length === 1 ? "" : "es"} guardada${trainings.length === 1 ? "" : "s"}`,
@@ -52,7 +53,7 @@ export function HistoryView({ matches: allMatches, trainings, teamId, teamName, 
             label="Tipo de análisis"
             value={subTab}
             onChange={onSubTabChange}
-            options={[{ value: "analisis", label: "Temporada" }, { value: "estadisticas", label: "Fases de gol" }, { value: "zonas", label: "Zonas" }]}
+            options={[{ value: "analisis", label: "Temporada" }, { value: "estadisticas", label: "Fases de gol" }, { value: "zonas", label: "Zonas" }, { value: "informes", label: "Informes" }]}
           />
         </div>
       )}
@@ -137,6 +138,8 @@ export function HistoryView({ matches: allMatches, trainings, teamId, teamName, 
       {subTab === "zonas" && !hideEmpty && <SeasonZonesView matches={matches} teamName={teamName} />}
 
       {subTab === "jugadores" && !hideEmpty && <SeasonPlayersView matches={matches} teamId={teamId} teamName={teamName} teamColors={teamColors} scopeLabel={scopeLabel} />}
+
+      {subTab === "informes" && !hideEmpty && <MatchReportsView matches={matches} teamId={teamId} teamName={teamName} teamCrest={teamCrest} teamColors={teamColors} rosterPlayers={rosterPlayers} />}
 
       {subTab === "analisis" && !hideEmpty && <SeasonAnalysisView matches={matches} teamId={teamId} teamName={teamName} teamColors={teamColors} scopeLabel={scopeLabel} />}
     </div>

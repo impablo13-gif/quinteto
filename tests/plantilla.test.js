@@ -83,3 +83,33 @@ test("acciones de portero: cuentan como actividad y salen en «Último»", () =>
   assert.equal(r.tone, "positive");
   assert.equal(describeLastRecord({ kind: "action", playerId: "g", key: "gkDistBad", half: 1 }, { players }).tone, "negative");
 });
+
+/* ---- Análisis › Informes: CSV de eventos ---- */
+import { matchSecondOf, matchEventsRows, matchEventsCsv, matchPlayersCsv } from "../src/reports/csv.js";
+import { ALL as FIXTURES } from "./fixtures/partidos.js";
+
+test("segundo de partido: suma las partes anteriores", () => {
+  const m = { halfLength: 20 };
+  assert.equal(matchSecondOf(m, 1, 1200), 0);
+  assert.equal(matchSecondOf(m, 1, 600), 600);
+  assert.equal(matchSecondOf(m, 2, 1200), 1200);
+  assert.equal(matchSecondOf(m, 3, 120), 2460, "prórroga de 3' tras 2x20");
+  assert.equal(matchSecondOf({ halfLength: 20, overtimeLength: 5 }, 4, 300), 2700);
+  assert.equal(matchSecondOf(m, 1, undefined), null);
+});
+
+test("CSV de eventos de los partidos de prueba: todo, en orden y sin duplicar faltas", () => {
+  Object.values(FIXTURES).forEach(({ match: m }) => {
+    const rows = matchEventsRows(m);
+    const expected = (m.goalEvents || []).length + (m.disciplineEvents || []).length
+      + (m.zonedEvents || []).filter((z) => z.key !== "fouls" && z.key !== "foulsReceived").length
+      + (m.timeouts || []).length + 2 * (m.rotations || []).length;
+    assert.equal(rows.length, expected);
+    const ts = rows.map((r) => r.t).filter((t) => t != null);
+    assert.deepEqual(ts, [...ts].sort((a, b) => a - b), "orden de juego");
+    const csv = matchEventsCsv(m);
+    assert.ok(csv.startsWith("﻿\"parte\";\"reloj\";\"segundo_partido\""));
+    assert.equal(csv.split("\r\n").length, expected + 1);
+    assert.ok(matchPlayersCsv(m).includes("\"Paradas\""));
+  });
+});

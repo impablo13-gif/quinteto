@@ -763,6 +763,17 @@ export function buildMatchJsonPayload(match, teamName) {
       players: match.players || [],
       goalEvents: match.goalEvents || [],
       convocados: match.convocados || null,
+      // Campos añadidos (los lectores antiguos los ignoran): todo lo que hace
+      // falta para cortes de vídeo y análisis en otras herramientas.
+      ...(match.competition ? { competition: match.competition } : {}),
+      ...(match.endTime ? { endTime: match.endTime } : {}),
+      halves: match.halves || [],
+      disciplineEvents: match.disciplineEvents || [],
+      zonedEvents: match.zonedEvents || [],
+      rotations: match.rotations || [],
+      timeouts: match.timeouts || [],
+      teamFouls: match.teamFouls || {},
+      rivalTeamFouls: match.rivalTeamFouls || {},
       reportGeneratedAt: match.reportGeneratedAt || new Date().toISOString(),
     },
   };
