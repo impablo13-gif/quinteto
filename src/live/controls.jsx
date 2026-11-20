@@ -1,10 +1,11 @@
 /* Movido desde src/App.jsx sin cambios de logica (fase 3, DISENO-TRANSFORMACION.md §8.2). */
-import { AlertTriangle, BarChart3, ClipboardList, Footprints, Hand, Minus, Plus, Save, Undo2, X } from "lucide-react";
-import { T, bigBtn, iconBtnSm, modalCard, overlayStyle, alpha } from "../theme/theme.js";
+import { useState } from "react";
+import { AlertTriangle, BarChart3, ClipboardList, Footprints, Hand, Minus, Plus, Save, TimerReset, Undo2, X } from "lucide-react";
+import { T, bigBtn, ghostBtn, iconBtnSm, modalCard, overlayStyle, alpha } from "../theme/theme.js";
 import { BallIcon, CardIcon } from "../ui/icons.jsx";
 import { FONTS, rgbTriplet } from "../brand/tokens.js";
-import { fmtClock, fmtMin, halfLabel } from "../domain/match.js";
-import { STAT_DEFS, Square } from "../ui/catalog.jsx";
+import { fmtClock, fmtMin, halfLabel, safeImgSrc } from "../domain/match.js";
+import { GK_ACTIONS, STAT_DEFS, Square } from "../ui/catalog.jsx";
 import { Avatar, MiniBadge } from "../ui/common.jsx";
 import { Overlay } from "../ui/kit.jsx";
 /* Bottom quick-action bar for the Partido tab: tap an action, then tap a player to record it. */
@@ -84,6 +85,35 @@ export function ClockDial({ seconds, progress, running, half, size = 68 }) {
 /* Faltas acumuladas de un equipo en la parte: cinco puntos que se llenan.
  * A la 4ª se ponen en ámbar; con 5 la siguiente es doble penalti (10 m) y a
  * partir de la 6ª ya se tira. Los botones ajustan a mano, como antes. */
+/* Corrección del reloj: se abre con un botón para no tocarlo sin querer.
+ * Cada botón sube (+) o baja (−) el tiempo que se ve en el reloj. */
+const CLOCK_STEPS = [[1, '0:01'], [5, '0:05'], [10, '0:10'], [30, '0:30'], [60, '1:00']];
+export function ClockAdjust({ onAdjust }) {
+  const [open, setOpen] = useState(false);
+  const step = { ...ghostBtn, minHeight: 40, minWidth: 52, justifyContent: "center", padding: "6px 8px", fontVariantNumeric: "tabular-nums", fontWeight: 700 };
+  return (
+    <>
+      <button type="button" aria-expanded={open} onClick={() => setOpen((v) => !v)} title="Corregir el reloj para cuadrarlo con el del pabellón" style={{ ...ghostBtn, minHeight: 40, ...(open ? { borderColor: T.accent, color: T.accent } : {}) }}>
+        <TimerReset size={13} aria-hidden="true" /> Corregir reloj
+      </button>
+      {open && (
+        <div role="group" aria-label="Corregir el reloj" style={{ flexBasis: "100%", display: "flex", flexDirection: "column", gap: 6, background: T.surface2, border: `1px solid ${T.line}`, borderRadius: 12, padding: 8 }}>
+          {[[-1, "Bajar", Minus, T.negative], [1, "Subir", Plus, T.positive]].map(([sign, label, Icon, color]) => (
+            <div key={sign} style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+              <span style={{ fontSize: 11, color: T.dim, width: 40 }}>{label}</span>
+              {CLOCK_STEPS.map(([secs, txt]) => (
+                <button key={secs} type="button" onClick={() => onAdjust(sign * secs)} aria-label={`${label} el reloj ${txt}`} style={{ ...step, color }}>
+                  <Icon size={11} aria-hidden="true" />{txt}
+                </button>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
 export function FoulsDots({ label, value, onInc, onDec, compact = false, limit = 6 }) {
   // limit = falta con la que ya se tira el doble penalti (6 por defecto, configurable por equipo).
   const free = Math.max(1, limit - 1);
@@ -130,21 +160,27 @@ export function PlayerCard({ player, stats, onCourt, accumulatedSeconds, stintSe
   const chipBg = !onCourt ? T.surface2 : T.surface3;
   const chipBorder = T.line;
   const chipColor = T.dim;
+  // En pista y con foto, la foto llena la tarjeta (con un degradado oscuro
+  // abajo para que el tiempo y el nombre se lean). En el banquillo, como
+  // siempre: foto pequeña y tarjeta apagada.
+  const photo = onCourt ? safeImgSrc(player.photo) : "";
+  const photoBg = photo ? `linear-gradient(180deg, ${alpha(T.ink, 0.05)} 0%, ${alpha(T.ink, 0.35)} 40%, ${alpha(T.ink, 0.9)} 78%), url("${photo}") center 18% / cover no-repeat` : null;
   return (
     <div
       onClick={onTap}
       className={`tap-target${armed ? " armable" : ""}`}
       style={{
-        background: cardBg,
+        background: photoBg || cardBg,
+        ...(photo ? { minHeight: compact ? 150 : 210, display: "flex", flexDirection: "column", justifyContent: "flex-end" } : {}),
         border: `${compact ? 2 : 3}px solid ${borderTint}`,
         boxShadow: onCourt ? `inset 0 ${compact ? 3 : 4}px 0 ${stateColor}, 0 0 0 1px rgba(${glowColor},0.25), 0 6px 18px rgba(${glowColor},0.12)` : "none",
         borderRadius: 14, padding: compact ? 8 : 12, cursor: "pointer", minWidth: 0,
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: compact ? 6 : 10 }}>
-        <Avatar player={player} size={compact ? 36 : 56} />
+        {!photo && <Avatar player={player} size={compact ? 36 : 56} />}
         <div style={{ minWidth: 0, flex: 1 }}>
-          <div style={{ fontSize: compact ? 12 : 14, fontWeight: 700, lineHeight: 1.25, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: fgColor }}>{player.name}</div>
+          <div style={{ fontSize: compact ? 12 : 14, fontWeight: 700, lineHeight: 1.25, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", color: photo ? T.white : fgColor, textShadow: photo ? `0 1px 3px ${alpha(T.ink, 0.8)}` : "none" }}>{player.name}</div>
           {/* El portero va anclado: no sale con un toque normal, así que esta
               etiqueta recuerda por qué su tarjeta se ve distinta y avisa
               cuando quien está parando no es el portero de plantilla. */}
@@ -154,7 +190,7 @@ export function PlayerCard({ player, stats, onCourt, accumulatedSeconds, stintSe
             </div>
           )}
         </div>
-        <div className="display" style={{ fontSize: compact ? 26 : 34, fontWeight: 700, color: jerseyColor, lineHeight: 1, flexShrink: 0 }}>{player.number}</div>
+        <div className="display" style={{ fontSize: compact ? 26 : 34, fontWeight: 700, color: jerseyColor, lineHeight: 1, flexShrink: 0, textShadow: photo ? `0 1px 4px ${alpha(T.ink, 0.9)}` : "none" }}>{player.number}</div>
       </div>
 
       {/* El tiempo de ESTA tanda en pista: solo existe mientras el jugador
@@ -183,8 +219,8 @@ export function PlayerCard({ player, stats, onCourt, accumulatedSeconds, stintSe
           antes de esta tanda, y en cuanto sale salta de golpe a incluirla, en
           el mismo instante de la sustitución. */}
       <div style={{ display: "flex", alignItems: "baseline", gap: 5, marginTop: onCourt ? (compact ? 6 : 14) : 6 }}>
-        <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: 0.3, color: accumColor }}>Parte</span>
-        <span className="display" style={{ fontSize: 14, fontWeight: 700, lineHeight: 1.1, color: accumColor }}>{fmtMin(accumulatedSeconds)}</span>
+        <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: 0.3, color: photo ? alpha(T.white, 0.8) : accumColor }}>Parte</span>
+        <span className="display" style={{ fontSize: 14, fontWeight: 700, lineHeight: 1.1, color: photo ? alpha(T.white, 0.8) : accumColor }}>{fmtMin(accumulatedSeconds)}</span>
       </div>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: compact ? 4 : 6, gap: 6, minHeight: 22 }}>
         <div style={{ display: "flex", gap: compact ? 3 : 6, alignItems: "center", flexWrap: "wrap", minWidth: 0 }}>
@@ -268,7 +304,9 @@ export function StatDrawer({ player, stats, canSave, onClose, onBump }) {
           ))}
           {/* Paradas: solo para quien puede pararlas — el portero de plantilla,
               o quien esté ahora mismo jugando de portero-jugador. */}
-          {canSave && <StatButton def={{ key: "saves", label: "Parada", icon: Hand, color: T.accent }} value={stats.saves || 0} onInc={() => onBump("saves", 1)} onDec={() => onBump("saves", -1)} />}
+          {canSave && GK_ACTIONS.map((d) => (
+            <StatButton key={d.key} def={d} value={stats[d.key] || 0} onInc={() => onBump(d.key, 1)} onDec={() => onBump(d.key, -1)} />
+          ))}
         </div>
       </div>
     </Overlay>

@@ -36,6 +36,7 @@ export const playerRow = (p) => ({
   "Tiros a puerta": p.shotsOn || 0, "Tiros fuera": p.shotsOff || 0, "Tiros al palo": p.shotsPost || 0,
   "Faltas cometidas": p.fouls || 0, "Faltas recibidas": p.foulsReceived || 0,
   Amarillas: p.yellow || 0, Rojas: p.red || 0, Paradas: p.saves || 0,
+  "1x1 ganados": p.gkOneVsOne || 0, "Salidas / cortes": p.gkInterceptions || 0, "Saques buenos": p.gkDistOk || 0, "Saques fallados": p.gkDistBad || 0,
   Recuperaciones: p.recoveries || 0, Pérdidas: p.turnovers || 0,
 });
 

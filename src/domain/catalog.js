@@ -60,6 +60,11 @@ export const PITCH_ZONE_LABEL = ZONE_LABELS;
 // también como DISCIPLINE_KEYS), así que la zona se suma a lo que ya había.
 export const ZONED_KEYS = new Set(["turnovers", "recoveries", "shotsOn", "shotsOff", "shotsPost", "fouls", "foulsReceived"]);
 
+// Acciones de portero: se anotan directamente al portero que esté en pista
+// (el de la plantilla o quien juegue de portero-jugador), sin elegir jugador.
+export const GK_ACTION_LABEL = { saves: "Parada", gkOneVsOne: "1x1 ganado", gkInterceptions: "Salida / corte", gkDistOk: "Saque bueno", gkDistBad: "Saque fallado" };
+export const GK_KEYS = new Set(Object.keys(GK_ACTION_LABEL));
+
 export const POS_GROUP_COLOR = POSITION_COLORS;
 export const POS_GROUP_ICON = { POR: "🧤", CIE: "🛡", ALA: "🪽", PIV: "🎯" };
 

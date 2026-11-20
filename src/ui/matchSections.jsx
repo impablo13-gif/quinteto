@@ -11,7 +11,7 @@ import { SectionHeading } from "./common.jsx";
 export function StatsTable({ players, statsMap }) {
   const rows = players.filter((p) => {
     const s = statsMap[p.id];
-    return s && (s.seconds > 0 || s.goals || s.assists || s.shotsOn || s.shotsOff || s.shotsPost || s.turnovers || s.recoveries || s.fouls || s.foulsReceived || s.yellow || s.red || s.saves);
+    return s && (s.seconds > 0 || s.goals || s.assists || s.shotsOn || s.shotsOff || s.shotsPost || s.turnovers || s.recoveries || s.fouls || s.foulsReceived || s.yellow || s.red || s.saves || s.gkOneVsOne || s.gkInterceptions || s.gkDistOk || s.gkDistBad);
   });
   if (!rows.length) {
     return <div style={{ padding: "10px 4px", color: T.dim, fontSize: 12 }}>Sin actividad registrada en esta parte.</div>;

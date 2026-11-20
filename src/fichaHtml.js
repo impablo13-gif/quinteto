@@ -141,7 +141,8 @@ export function buildPlayerReportHtml(opts) {
           <table style="width:100%; border-collapse:collapse;">
             <tr style="color:${PAL.dim};"><th style="${TH} text-align:left;">Acción</th><th style="${TH}">Total</th></tr>
             ${[["Tiros a puerta", t.shotsOn], ["Tiros fuera", t.shotsOff], ["Tiros al palo", t.shotsPost], ["Recuperaciones", t.recoveries], ["Pérdidas", t.turnovers],
-    ["Faltas cometidas", t.fouls], ["Faltas recibidas", t.foulsReceived], ["Amarillas", t.yellow], ["Rojas", t.red], ...(report.isGK || t.saves ? [["Paradas", t.saves]] : [])]
+    ["Faltas cometidas", t.fouls], ["Faltas recibidas", t.foulsReceived], ["Amarillas", t.yellow], ["Rojas", t.red], ...(report.isGK || t.saves || t.gkOneVsOne || t.gkInterceptions || t.gkDistOk || t.gkDistBad
+      ? [["Paradas", t.saves], ["1x1 ganados", t.gkOneVsOne || 0], ["Salidas / cortes", t.gkInterceptions || 0], ["Saques buenos", t.gkDistOk || 0], ["Saques fallados", t.gkDistBad || 0]] : [])]
     .map(([l, v]) => `<tr style="border-top:1px solid ${PAL.line};"><td style="${TD} text-align:left;">${esc(l)}</td><td style="${TD} font-weight:700;">${v}</td></tr>`).join("")}
           </table>
         </div>

@@ -8,14 +8,14 @@
  *     armazón: son pantallas de foco, sin navegación que distraiga.
  */
 import { useState } from "react";
-import { BarChart3, Dumbbell, Home, MoreHorizontal, Play, Shield, Shirt, Trophy, Users } from "lucide-react";
+import { BarChart3, Dumbbell, MoreHorizontal, Play, Shield, Shirt, Trophy, Users } from "lucide-react";
 import { T, alpha } from "../theme/theme.js";
 import { Logo, LogoMark } from "../brand/Logo.jsx";
 import { useIsNarrow } from "./common.jsx";
 import { Overlay } from "./kit.jsx";
 
 export const SECTIONS = [
-  { id: "inicio", label: "Inicio", icon: Home },
+  { id: "inicio", label: "Inicio", icon: HomeLogo },
   { id: "directo", label: "Directo", icon: Play },
   { id: "partidos", label: "Partidos", icon: Trophy },
   { id: "jugadores", label: "Jugadores", icon: Users },
@@ -23,6 +23,11 @@ export const SECTIONS = [
   { id: "entrenos", label: "Entrenos", icon: Dumbbell },
   { id: "equipo", label: "Equipo", icon: Shirt },
 ];
+// Inicio lleva el símbolo de la app (el mismo que el icono instalado).
+function HomeLogo({ size = 20 }) {
+  return <LogoMark size={size + 4} />;
+}
+
 const MOBILE_MAIN = ["inicio", "directo", "partidos", "analisis"];
 
 /* Escudo del equipo, solo para mostrar (se edita en Inicio). */

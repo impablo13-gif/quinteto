@@ -9,10 +9,11 @@ import { RosterEditor } from "../roster/RosterEditor.jsx";
 import { AppMaintenance } from "./AppMaintenance.jsx";
 import { ClubColors } from "./ClubColors.jsx";
 import { TeamRules } from "./TeamRules.jsx";
+import { RosterImport } from "../roster/RosterImport.jsx";
 
 export function TeamView({
   team, teamCount, onOpenTeams, onPickCrest, onReframeCrest, onRemoveCrest, onChangeColors, onChangeConfig, matches,
-  roster, hasHistory, onExport, onOpenBackup, lastBackupAt,
+  roster, onImportRoster, rosterLocked, hasHistory, onExport, onOpenBackup, lastBackupAt,
   maintenance,
 }) {
   const backupText = !lastBackupAt ? "Todavía no hay ninguna copia de seguridad en este dispositivo."
@@ -48,6 +49,7 @@ export function TeamView({
       {onChangeConfig && team.id && <TeamRules team={team} matches={matches} onChange={onChangeConfig} />}
 
       <Card>
+        {onImportRoster && <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 8 }}><RosterImport roster={roster.players} onApply={onImportRoster} replaceLocked={rosterLocked} /></div>}
         <RosterEditor {...roster} />
       </Card>
 

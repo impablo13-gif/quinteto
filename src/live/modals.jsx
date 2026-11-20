@@ -5,10 +5,10 @@ import { T, bigBtn, ghostBtn, iconBtnSm, modalCard, overlayStyle, alpha } from "
 import { POSITIONS, POS_LABEL, fmtMin, halfLabel, halfMinutesFor } from "../domain/match.js";
 import { PITCH_ZONES_FINE, PITCH_ZONE_LABEL } from "../domain/catalog.js";
 import { selectablePhases } from "../domain/config.js";
-import { CARD_ACTIONS, QUICK_STAT_ACTIONS } from "../ui/catalog.jsx";
+import { CARD_ACTIONS, GK_ACTIONS, QUICK_STAT_ACTIONS } from "../ui/catalog.jsx";
 import { Avatar } from "../ui/common.jsx";
 import { Overlay } from "../ui/kit.jsx";
-export function ActionsPopover({ onPick, onClose }) {
+export function ActionsPopover({ onPick, onClose, keeperName }) {
   return (
     <Overlay onClose={onClose}>
       <div style={{ ...modalCard, maxWidth: 360 }} onClick={(e) => e.stopPropagation()} className="fadein">
@@ -22,6 +22,19 @@ export function ActionsPopover({ onPick, onClose }) {
             return (
               <button key={a.key} onClick={() => onPick(a.key, a.label)} style={{ display: "flex", alignItems: "center", gap: 8, background: T.surface2, border: `1px solid ${T.line}`, borderRadius: 10, padding: "10px 12px", cursor: "pointer", color: T.text }}>
                 <Icon size={16} color={a.color || T.accent} /><span style={{ fontSize: 13 }}>{a.label}</span>
+              </button>
+            );
+          })}
+        </div>
+        <div style={{ fontSize: 11, fontWeight: 700, color: T.dim, textTransform: "uppercase", letterSpacing: 0.5, margin: "14px 0 8px" }}>
+          Portero{keeperName ? ` · ${keeperName}` : " · no hay portero en pista"}
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+          {GK_ACTIONS.map((a) => {
+            const Icon = a.icon;
+            return (
+              <button key={a.key} disabled={!keeperName} onClick={() => onPick(a.key, a.label)} style={{ display: "flex", alignItems: "center", gap: 8, background: T.surface2, border: `1px solid ${T.line}`, borderRadius: 10, padding: "10px 12px", minHeight: 44, cursor: keeperName ? "pointer" : "not-allowed", opacity: keeperName ? 1 : 0.45, color: T.text, textAlign: "left" }}>
+                <Icon size={16} color={a.color} aria-hidden="true" /><span style={{ fontSize: 13 }}>{a.label}</span>
               </button>
             );
           })}

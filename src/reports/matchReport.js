@@ -602,12 +602,17 @@ export function buildMatchReportHtml(rawMatch, teamName, rosterPlayers, teamCres
     const g = rotFor(row);
     if (!g) return 0;
     let n = 0;
-    (match.goalEvents || []).filter((ev) => ev.type === "contra").forEach((ev) => {
+    (match.goalEvents || []).filter((ev) => ev.type === "against").forEach((ev) => {
       const h = g.halves.get(ev.half);
       if (!h) return;
       if (h.list.some((iv) => ev.remaining <= iv.startRemaining && ev.remaining >= iv.endRemaining)) n++;
     });
     return n;
+  };
+  // Acciones de portero anotadas (solo las que tengan algo).
+  const gkLine = (row) => {
+    const items = [["1x1 ganados", row.gkOneVsOne], ["Salidas / cortes", row.gkInterceptions], ["Saques buenos", row.gkDistOk], ["Saques fallados", row.gkDistBad]].filter(([, v]) => v > 0);
+    return items.length ? `<div style="font-size:8.5px; color:${R.inkSoft}; margin:3px 0 2px;">${items.map(([l, v]) => `${esc(l)} <b>${v}</b>`).join(" · ")}</div>` : "";
   };
   const fichaCard = (row) => {
     const g = rotFor(row);
@@ -623,7 +628,7 @@ export function buildMatchReportHtml(rawMatch, teamName, rosterPlayers, teamCres
             <div><div style="font-size:16px; font-weight:800; color:${PAL.favor};">${row.saves || 0}</div><div style="font-size:6px; color:${R.subtle}; text-transform:uppercase; font-weight:700;">Paradas</div></div>
             <div><div style="font-size:16px; font-weight:800; color:${PAL.contra};">${concededBy(row)}</div><div style="font-size:6px; color:${R.subtle}; text-transform:uppercase; font-weight:700;">Encajados</div></div>
           </div>
-        </div>` : `<div style="font-size:12.5px; font-weight:800;">#${esc(row.number)} ${esc(row.name)}</div>`;
+        </div>${gkLine(row)}` : `<div style="font-size:12.5px; font-weight:800;">#${esc(row.number)} ${esc(row.name)}</div>`;
     return `<div data-pdf-block="true" style="border:1px solid ${R.line}; border-radius:11px; padding:11px; display:flex; gap:11px; align-items:flex-start; background:${R.bg}; break-inside:avoid;">
         ${avatarImg(row, 42)}
         <div style="flex:1; min-width:0;">

@@ -16,7 +16,7 @@ import { UpdateBanner } from "./features/home/HomeView.jsx";
 import { TeamManagerModal } from "./features/home/TeamManagerModal.jsx";
 import { BackupModal } from "./features/backup/BackupModal.jsx";
 import { DraftRecoveryModal } from "./features/backup/DraftRecoveryModal.jsx";
-import { ClockDial, FoulsDots, PlayerCard, QuickActionBar, StatDrawer, TrainingPlayerCard } from "./live/controls.jsx";
+import { ClockAdjust, ClockDial, FoulsDots, PlayerCard, QuickActionBar, StatDrawer, TrainingPlayerCard } from "./live/controls.jsx";
 import { ActionsPopover, AssistPopover, CardsPopover, ConvocatoriaModal, GoalEditModal, GoalPhasePopover, GoalkeeperSwapModal, PitchZonePicker, SubstitutionPicker } from "./live/modals.jsx";
 import { SummaryModal } from "./live/SummaryModal.jsx";
 import { HistoryView } from "./features/history/HistoryView.jsx";
@@ -109,6 +109,7 @@ export default function App() {
     handleTeamCrestRemove,
     handleTeamColors,
     handleTeamConfig,
+    importRoster,
     teamConfig,
     overtimeLength,
     historySubTab,
@@ -132,6 +133,7 @@ export default function App() {
     players,
     registerRivalOwnGoal,
     registerTimeout,
+    adjustClock,
     remaining,
     removePlayer,
     removeRivalGoal,
@@ -378,13 +380,15 @@ export default function App() {
                     )}
                     {["for", "against"].map((team) => {
                       const n = timeouts.filter((t) => t.team === team && t.half === half).length;
-                      const used = half <= 2 && n >= 1;
+                      const tLimit = teamConfig.rules.timeoutsPerHalf; // 0 = sin límite
+                      const used = half <= 2 && tLimit > 0 && n >= tLimit;
                       return (
                         <button key={team} onClick={() => registerTimeout(team)} title={used ? "Ya usado en esta parte" : "Tiempo muerto: para el reloj y lo anota"} style={{ ...ghostBtn, minHeight: 40, ...(used ? { opacity: 0.5, textDecoration: "line-through" } : {}) }}>
                           <Clock3 size={13} /> T.M. {team === "for" ? "nuestro" : "rival"}{half > 2 && n > 0 ? ` · ${n}` : ""}{used ? " · usado" : ""}
                         </button>
                       );
                     })}
+                    <ClockAdjust onAdjust={adjustClock} />
                     <button onClick={armRivalExpulsion} style={{ ...ghostBtn, minHeight: 40, borderColor: T.negative, color: T.negative }}><AlertTriangle size={13} /> Expulsión rival</button>
                   </div>
                 </div>
@@ -527,6 +531,7 @@ export default function App() {
             onChangeColors={(colors) => handleTeamColors(activeTeamId, colors)}
             onChangeConfig={(config) => handleTeamConfig(activeTeamId, config)} matches={savedMatches}
             roster={{ players, onAdd: addPlayer, onRemove: askRemovePlayer, onSave: savePlayerEdit, onNewFile: handleNewFile, onReframe: handleReframe }}
+            onImportRoster={importRoster} rosterLocked={matchInProgress}
             hasHistory={savedMatches.length > 0 || savedTrainings.length > 0}
             onExport={() => exportClubDataToExcel(savedMatches, savedTrainings, activeTeam.name)}
             onOpenBackup={() => setBackupOpen(true)}
@@ -587,7 +592,7 @@ export default function App() {
       {cropTarget && <PhotoCropEditor src={cropTarget.src} onCancel={() => setCropTarget(null)} onSave={handleCropSave} />}
 
       {actionsPopoverOpen && (
-        <ActionsPopover onPick={armStatAction} onClose={() => setActionsPopoverOpen(false)} />
+        <ActionsPopover onPick={armStatAction} onClose={() => setActionsPopoverOpen(false)} keeperName={(players.find((p) => p.id === keeperOnCourtId) || {}).name} />
       )}
 
       {cardsPopoverOpen && (

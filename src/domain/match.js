@@ -20,6 +20,9 @@ export const defaultRoster = () =>
 export const emptyStats = () => ({
   seconds: 0, goals: 0, assists: 0, fouls: 0, foulsReceived: 0, yellow: 0, red: 0,
   saves: 0, turnovers: 0, recoveries: 0, shotsOn: 0, shotsOff: 0, shotsPost: 0,
+  // Acciones de portero (se anotan al portero en pista). Claves nuevas: los
+  // partidos antiguos no las llevan y cuentan como 0.
+  gkOneVsOne: 0, gkInterceptions: 0, gkDistOk: 0, gkDistBad: 0,
 });
 export const STAT_KEYS = Object.keys(emptyStats());
 
@@ -131,7 +134,8 @@ export function withCoarseZones(match) {
 // exportaciones, porque las asistencias faltaban en este filtro.
 export const hasActivity = (p) =>
   p.seconds > 0 || p.goals || p.assists || p.fouls || p.foulsReceived || p.yellow || p.red ||
-  p.saves || p.recoveries || p.turnovers || p.shotsOn || p.shotsOff || p.shotsPost;
+  p.saves || p.recoveries || p.turnovers || p.shotsOn || p.shotsOff || p.shotsPost ||
+  p.gkOneVsOne || p.gkInterceptions || p.gkDistOk || p.gkDistBad;
 
 // Marcador de una parte concreta, para poder leer de un vistazo en que mitad
 // se decidio el partido.

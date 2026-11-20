@@ -21,7 +21,8 @@
 
 import { playerKeyOf } from "./zonas.js";
 
-const NUM_KEYS = ["seconds", "goals", "assists", "fouls", "foulsReceived", "yellow", "red", "saves", "turnovers", "recoveries", "shotsOn", "shotsOff", "shotsPost"];
+const NUM_KEYS = ["seconds", "goals", "assists", "fouls", "foulsReceived", "yellow", "red", "saves", "turnovers", "recoveries", "shotsOn", "shotsOff", "shotsPost",
+  "gkOneVsOne", "gkInterceptions", "gkDistOk", "gkDistBad"];
 
 // Ritmos por 40 min (un partido de futbol sala: 2 x 20). Con pocos minutos un
 // ritmo engana (1 gol en 3 minutos = 13 por 40), asi que por debajo de este
@@ -165,7 +166,8 @@ export function playerReport(matches, playerKey, period = { mode: "all" }) {
       matchDate: r.matchDate, rival: r.rival, result: `${r.teamGoals}-${r.rivalGoals}`,
       played: r.played, seconds: r.seconds, goals: r.goals, assists: r.assists, finishes: r.finishes,
       recoveries: r.recoveries, turnovers: r.turnovers, fouls: r.fouls, yellow: r.yellow, red: r.red,
-      saves: r.saves, balance: r.balance, favor: r.favor, contra: r.contra,
+      saves: r.saves, gkOneVsOne: r.gkOneVsOne, gkInterceptions: r.gkInterceptions, gkDistOk: r.gkDistOk, gkDistBad: r.gkDistBad,
+      balance: r.balance, favor: r.favor, contra: r.contra,
     })),
   };
 }
@@ -176,13 +178,13 @@ export function tableToCsv(table) {
   const dec = (v, d = 2) => (v === null || v === undefined ? "" : String(Number(v.toFixed(d))).replace(".", ","));
   const head = ["dorsal", "jugador", "posicion", "convocatorias", "partidos_jugados", "minutos", "minutos_por_partido", "goles", "asistencias",
     "tiros_puerta", "tiros_fuera", "tiros_palo", "finalizaciones", "efectividad_pct", "recuperaciones", "perdidas", "faltas", "faltas_recibidas",
-    "amarillas", "rojas", "paradas", "goles_favor_en_pista", "goles_contra_en_pista", "balance_en_pista",
+    "amarillas", "rojas", "paradas", "unoxuno_ganados", "salidas_cortes", "saques_buenos", "saques_fallados", "goles_favor_en_pista", "goles_contra_en_pista", "balance_en_pista",
     "goles_por_40", "asistencias_por_40", "recuperaciones_por_40", "perdidas_por_40"];
   const rows = table.map((p) => {
     const t = p.total;
     return [p.number, p.name, p.position, t.matchesCalled, t.matchesPlayed, dec(t.minutes, 1), dec(t.avgSeconds / 60, 1), t.goals, t.assists,
       t.shotsOn, t.shotsOff, t.shotsPost, t.finishes, t.efficiency === null ? "" : dec(t.efficiency * 100, 0), t.recoveries, t.turnovers, t.fouls, t.foulsReceived,
-      t.yellow, t.red, t.saves, t.balanceFavor, t.balanceContra, t.balance,
+      t.yellow, t.red, t.saves, t.gkOneVsOne, t.gkInterceptions, t.gkDistOk, t.gkDistBad, t.balanceFavor, t.balanceContra, t.balance,
       dec(t.rates.goals), dec(t.rates.assists), dec(t.rates.recoveries), dec(t.rates.turnovers)];
   });
   return "﻿" + [head, ...rows].map((r) => r.map(q).join(";")).join("\r\n");
@@ -191,10 +193,10 @@ export function tableToCsv(table) {
 /* CSV de un jugador, partido a partido. */
 export function seriesToCsv(report) {
   const q = (v) => `"${String(v === null || v === undefined ? "" : v).replace(/"/g, '""')}"`;
-  const head = ["fecha", "rival", "resultado", "jugo", "minutos", "goles", "asistencias", "finalizaciones", "recuperaciones", "perdidas", "faltas", "amarillas", "rojas", "paradas", "goles_favor_en_pista", "goles_contra_en_pista", "balance_en_pista"];
+  const head = ["fecha", "rival", "resultado", "jugo", "minutos", "goles", "asistencias", "finalizaciones", "recuperaciones", "perdidas", "faltas", "amarillas", "rojas", "paradas", "unoxuno_ganados", "salidas_cortes", "saques_buenos", "saques_fallados", "goles_favor_en_pista", "goles_contra_en_pista", "balance_en_pista"];
   const rows = report.series.map((s) => [
     new Date(s.matchDate).toISOString().slice(0, 10), s.rival, s.result, s.played ? "si" : "no", String(Number((s.seconds / 60).toFixed(1))).replace(".", ","),
-    s.goals, s.assists, s.finishes, s.recoveries, s.turnovers, s.fouls, s.yellow, s.red, s.saves, s.favor, s.contra, s.balance,
+    s.goals, s.assists, s.finishes, s.recoveries, s.turnovers, s.fouls, s.yellow, s.red, s.saves, s.gkOneVsOne, s.gkInterceptions, s.gkDistOk, s.gkDistBad, s.favor, s.contra, s.balance,
   ]);
   return "﻿" + [head, ...rows].map((r) => r.map(q).join(";")).join("\r\n");
 }

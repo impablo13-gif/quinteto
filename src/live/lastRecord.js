@@ -3,11 +3,11 @@
  * confirmar lo anotado sin abrir nada (DISENO-TRANSFORMACION.md §9.1).
  * Función pura: solo lee el estado, no lo cambia. */
 import { fmtClock } from "../domain/match.js";
-import { DISCIPLINE_LABEL, ZONED_LABEL, PITCH_ZONE_LABEL } from "../domain/catalog.js";
+import { DISCIPLINE_LABEL, GK_ACTION_LABEL, ZONED_LABEL, PITCH_ZONE_LABEL } from "../domain/catalog.js";
 
-const ACTION_LABEL = { ...ZONED_LABEL, ...DISCIPLINE_LABEL, saves: "Parada", goals: "Gol", assists: "Asistencia" };
-const POSITIVE = new Set(["recoveries", "shotsOn", "foulsReceived", "saves"]);
-const NEGATIVE = new Set(["turnovers", "fouls", "red"]);
+const ACTION_LABEL = { ...ZONED_LABEL, ...DISCIPLINE_LABEL, ...GK_ACTION_LABEL, goals: "Gol", assists: "Asistencia" };
+const POSITIVE = new Set(["recoveries", "shotsOn", "foulsReceived", "saves", "gkOneVsOne", "gkInterceptions", "gkDistOk"]);
+const NEGATIVE = new Set(["turnovers", "fouls", "red", "gkDistBad"]);
 const WARNING = new Set(["yellow", "shotsPost"]);
 
 const playerLabel = (players, id) => {

@@ -1,5 +1,6 @@
 /* Movido desde src/App.jsx sin cambios de logica (fase 3, DISENO-TRANSFORMACION.md §8.2). */
-import { AlertTriangle, ArrowLeftRight, Footprints, Hand, Minus, Shield, Target, X } from "lucide-react";
+import { AlertTriangle, ArrowLeftRight, Ban, Footprints, Hand, Minus, Send, Shield, ShieldCheck, Swords, Target, X } from "lucide-react";
+import { GK_ACTION_LABEL } from "../domain/catalog.js";
 import { T } from "../theme/theme.js";
 import { signedN } from "../domain/match.js";
 export function Square({ size = 16, color = "currentColor" }) {
@@ -32,8 +33,16 @@ export const QUICK_STAT_ACTIONS = [
   { key: "recoveries", label: "Recuperación", icon: Shield, color: T.positive },
   { key: "fouls", label: "Falta cometida", icon: AlertTriangle, color: T.negative },
   { key: "foulsReceived", label: "Falta recibida", icon: Shield, color: T.positive },
-  { key: "saves", label: "Parada", icon: Hand, color: T.positive },
 ];
+
+// Acciones de portero: van siempre al portero en pista.
+export const GK_ACTIONS = [
+  { key: "saves", icon: Hand, color: T.positive },
+  { key: "gkOneVsOne", icon: Swords, color: T.positive },
+  { key: "gkInterceptions", icon: ShieldCheck, color: T.positive },
+  { key: "gkDistOk", icon: Send, color: T.info },
+  { key: "gkDistBad", icon: Ban, color: T.negative },
+].map((a) => ({ ...a, label: GK_ACTION_LABEL[a.key] }));
 
 // The bottom bar's own dedicated "Tarjeta" button opens this separate, smaller picker.
 export const CARD_ACTIONS = [

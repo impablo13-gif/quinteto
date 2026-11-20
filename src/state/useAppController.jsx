@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { requestPersistence, storage } from "../storage.js";
 import { appEvent } from "../brand/brand.js";
 import { DRAFT_VERSION, STAT_KEYS, accumulatedFouls, defaultRoster, emptyStats, fmtClock, halfLabel, halfMinutesFor, halvesPresent, matchDraftKey, newTeam, pickStartingFive, sumHalves, trainingDraftKey } from "../domain/match.js";
-import { DISCIPLINE_KEYS, PITCH_ZONE_LABEL, ZONED_KEYS } from "../domain/catalog.js";
+import { DISCIPLINE_KEYS, GK_ACTION_LABEL, GK_KEYS, PITCH_ZONE_LABEL, ZONED_KEYS } from "../domain/catalog.js";
 import { OT_HALF_MIN } from "../domain/match.js";
 import { applyConfig, normalizeConfig, isDefaultConfig } from "../domain/config.js";
 import { matchChecks } from "../domain/checks.js";
@@ -287,6 +287,41 @@ export function useAppController() {
       showToast("Fin de la parte");
     }
   }, [showToast]);
+
+  // Corrección manual del reloj (± 1", 5", 10", 30" o 1'), para cuadrarlo con
+  // el marcador del pabellón. deltaRemaining > 0 sube el tiempo que se ve (le
+  // quita tiempo jugado a la parte); < 0 lo baja. Lo que cambia el tiempo de
+  // la parte cambia igual los minutos de quien está en pista: si el reloj
+  // corrió de más, ellos también sumaron de más.
+  const adjustClock = (deltaRemaining) => {
+    commitTime();
+    const total = Math.max(1, halfMinutesFor(halfRef.current, halfLenRef.current, otLenRef.current) * 60);
+    const target = Math.min(total, Math.max(0, secondsRef.current - deltaRemaining));
+    const applied = target - secondsRef.current; // + = más tiempo jugado
+    if (!applied) { showToast(deltaRemaining > 0 ? "El reloj ya está al inicio de la parte" : "El reloj ya está al final de la parte"); return; }
+    secondsRef.current = target;
+    setSeconds(target);
+    if (runningRef.current) anchorRef.current = Date.now();
+    const ids = onCourtRef.current;
+    const h = halfRef.current;
+    if (ids.length) {
+      setStatsByHalf((prev) => {
+        const halfMap = { ...(prev[h] || {}) };
+        ids.forEach((id) => {
+          const cur = halfMap[id] || emptyStats();
+          halfMap[id] = { ...cur, seconds: Math.max(0, (cur.seconds || 0) + applied) };
+        });
+        return { ...prev, [h]: halfMap };
+      });
+    }
+    // Una rotación abierta no puede empezar «después» de la marca actual.
+    const nowRemaining = Math.max(0, total - target);
+    stintsRef.current.forEach((st) => { if (st.startRemaining < nowRemaining) st.startRemaining = nowRemaining; });
+    const abs = Math.abs(applied);
+    const txt = abs >= 60 ? `${Math.floor(abs / 60)}'${abs % 60 ? ` ${abs % 60}"` : ""}` : `${abs}"`;
+    showToast(`Reloj corregido ${applied < 0 ? "+" : "−"}${txt} · quedan ${fmtClock(nowRemaining)}`);
+    saveDraftNow();
+  };
 
   // Único punto donde arranca o para el reloj: siempre liquida antes lo que
   // llevaba corrido, para que ni un segundo se quede sin asignar.
@@ -1198,12 +1233,12 @@ export function useAppController() {
 
   const armStatAction = (key, label) => {
     setActionsPopoverOpen(false);
-    if (key === "saves") {
+    if (GK_KEYS.has(key)) {
       if (!keeperOnCourtId) { showToast("No hay portero en pista"); return; }
       const gk = players.find((p) => p.id === keeperOnCourtId);
-      bump(keeperOnCourtId, "saves", 1);
+      bump(keeperOnCourtId, key, 1);
       setLastGoalEvent(null);
-      showToast(`Parada — ${gk ? gk.name : ""}`);
+      showToast(`${GK_ACTION_LABEL[key]} — ${gk ? gk.name : ""}`);
       return;
     }
     // Pérdidas, recuperaciones y tiros piden también jugador y zona, con un
@@ -1292,6 +1327,26 @@ export function useAppController() {
     setTrainingStats((s) => ({ ...s, [np.id]: { seconds: 0 } }));
     persistRoster(next);
     return np;
+  };
+
+  // Importar jugadores desde un .json (Equipo › Plantilla): la lista ya viene
+  // unida con la actual (domain/rosterImport.js), aquí solo se guarda.
+  const importRoster = (list, summary) => {
+    setPlayers(list);
+    setTrainingStats((s) => { const n = { ...s }; list.forEach((p) => { if (!n[p.id]) n[p.id] = { seconds: 0 }; }); return n; });
+    persistRoster(list);
+    // Sin partido empezado, el quinteto de salida se rehace con la plantilla
+    // nueva (si no, seguiría apuntando a jugadores que ya no están).
+    const ids = new Set(list.map((p) => p.id));
+    if (!matchInProgress) {
+      const five = pickStartingFive(list.map((p) => p.id), list);
+      setOnCourt(five); onCourtRef.current = five;
+      setChosenGoalkeeperId(null);
+    } else {
+      setOnCourt((prev) => prev.filter((id) => ids.has(id)));
+    }
+    setTrainingActive((prev) => prev.filter((id) => ids.has(id)));
+    showToast(`Plantilla importada · ${summary.added} nuevo${summary.added === 1 ? "" : "s"}, ${summary.updated} actualizado${summary.updated === 1 ? "" : "s"}`);
   };
 
   // Quitar a alguien de la plantilla pide confirmacion: en el partido en curso
@@ -1693,6 +1748,7 @@ export function useAppController() {
     handleTeamCrestRemove,
     handleTeamColors,
     handleTeamConfig,
+    importRoster,
     teamConfig,
     overtimeLength,
     historySubTab,
@@ -1716,6 +1772,7 @@ export function useAppController() {
     players,
     registerRivalOwnGoal,
     registerTimeout,
+    adjustClock,
     remaining,
     removePlayer,
     removeRivalGoal,
