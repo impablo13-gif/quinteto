@@ -19,7 +19,7 @@ export function HistoryView({ matches: allMatches, trainings, teamId, teamName, 
   const total = allMatches.length + trainings.length;
   // Cada destino de la navegación muestra su parte del antiguo «Historial»:
   // Partidos, Jugadores, Análisis (resumen, fases de gol y zonas) y Entrenos.
-  const section = subTab === "partidos" ? "partidos" : subTab === "jugadores" ? "jugadores" : subTab === "entrenamientos" ? "entrenos" : "analisis";
+  const section = subTab === "partidos" ? "partidos" : subTab === "jugadores" ? "jugadores" : subTab === "entrenamientos" ? "entrenos" : subTab === "informes" ? "informes" : "analisis";
   const rivalOn = section === "partidos" && filters.rival !== ALL;
   const matches = filterMatches(allMatches, { ...filters, rival: section === "partidos" ? filters.rival : ALL });
   const filtered = matches.length !== allMatches.length;
@@ -32,7 +32,8 @@ export function HistoryView({ matches: allMatches, trainings, teamId, teamName, 
       right: total > 0 && <Button size="sm" variant="ghost" icon={FileSpreadsheet} onClick={onExport}>Exportar a Excel</Button>,
     },
     jugadores: { title: "Jugadores", subtitle: "Totales por periodo, ficha de cada jugador y conclusiones" },
-    analisis: { title: "Análisis", subtitle: "Temporada, fases de gol, mapa de zonas e informes de cada partido" },
+    analisis: { title: "Análisis", subtitle: "Temporada, fases de gol y mapa de zonas" },
+    informes: { title: "Informes", subtitle: "El informe en PDF de cada partido, sus datos en CSV y su archivo .json" },
     entrenos: {
       title: "Entrenos",
       subtitle: `${trainings.length} sesión${trainings.length === 1 ? "" : "es"} guardada${trainings.length === 1 ? "" : "s"}`,
@@ -53,7 +54,7 @@ export function HistoryView({ matches: allMatches, trainings, teamId, teamName, 
             label="Tipo de análisis"
             value={subTab}
             onChange={onSubTabChange}
-            options={[{ value: "analisis", label: "Temporada" }, { value: "estadisticas", label: "Fases de gol" }, { value: "zonas", label: "Zonas" }, { value: "informes", label: "Informes" }]}
+            options={[{ value: "analisis", label: "Temporada" }, { value: "estadisticas", label: "Fases de gol" }, { value: "zonas", label: "Zonas" }]}
           />
         </div>
       )}

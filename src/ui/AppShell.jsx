@@ -8,9 +8,9 @@
  *     armazón: son pantallas de foco, sin navegación que distraiga.
  */
 import { useState } from "react";
-import { BarChart3, Dumbbell, MoreHorizontal, Play, Shield, Shirt, Trophy, Users } from "lucide-react";
+import { BarChart3, Dumbbell, FileText, MoreHorizontal, Play, Shield, Shirt, Trophy, Users } from "lucide-react";
 import { T, alpha } from "../theme/theme.js";
-import { Logo, LogoMark } from "../brand/Logo.jsx";
+import { LogoMark } from "../brand/Logo.jsx";
 import { useIsNarrow } from "./common.jsx";
 import { Overlay } from "./kit.jsx";
 
@@ -20,6 +20,7 @@ export const SECTIONS = [
   { id: "partidos", label: "Partidos", icon: Trophy },
   { id: "jugadores", label: "Jugadores", icon: Users },
   { id: "analisis", label: "Análisis", icon: BarChart3 },
+  { id: "informes", label: "Informes", icon: FileText },
   { id: "entrenos", label: "Entrenos", icon: Dumbbell },
   { id: "equipo", label: "Equipo", icon: Shirt },
 ];
@@ -75,8 +76,7 @@ export function AppShell({ section, onNavigate, team, onOpenTeams, matchInProgre
     const moreActive = more.some((s) => s.id === section);
     return (
       <div style={{ minHeight: "100dvh" }}>
-        <header style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, padding: "10px 16px", borderBottom: `1px solid ${T.line}`, background: T.bg, position: "sticky", top: 0, zIndex: 50 }}>
-          <LogoMark size={28} />
+        <header style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 10, padding: "10px 16px", borderBottom: `1px solid ${T.line}`, background: T.bg, position: "sticky", top: 0, zIndex: 50 }}>
           <button type="button" onClick={onOpenTeams} aria-label="Cambiar o gestionar equipos" style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0, background: "transparent", border: `1px solid ${T.line}`, borderRadius: 999, padding: "4px 12px 4px 4px", color: T.text, cursor: "pointer" }}>
             <CrestBadge crest={team.crest} size={26} />
             <span style={{ fontSize: 13, fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "52vw" }}>{team.name}</span>
@@ -114,9 +114,6 @@ export function AppShell({ section, onNavigate, team, onOpenTeams, matchInProgre
   return (
     <div style={{ display: "grid", gridTemplateColumns: `${railW}px minmax(0, 1fr)`, minHeight: "100dvh" }}>
       <nav aria-label="Navegación principal" style={{ position: "sticky", top: 0, height: "100dvh", overflowY: "auto", borderRight: `1px solid ${T.line}`, background: T.bg, padding: compact ? "16px 8px" : "20px 14px", display: "flex", flexDirection: "column", gap: 6 }}>
-        <div style={{ padding: compact ? "0 0 12px" : "0 6px 14px", display: "flex", justifyContent: compact ? "center" : "flex-start" }}>
-          {compact ? <LogoMark size={36} /> : <Logo size={30} />}
-        </div>
         <button type="button" onClick={onOpenTeams} title="Cambiar o gestionar equipos" aria-label={`Equipo activo: ${team.name}. Cambiar o gestionar equipos`}
           style={{ display: "flex", alignItems: "center", gap: 10, flexDirection: compact ? "column" : "row", padding: compact ? "8px 4px" : 10, marginBottom: 10, borderRadius: 12, border: `1px solid ${T.line}`, background: T.surface, color: T.text, cursor: "pointer", textAlign: "left", minWidth: 0 }}>
           <CrestBadge crest={team.crest} size={compact ? 34 : 38} />

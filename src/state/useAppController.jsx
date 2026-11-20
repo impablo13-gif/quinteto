@@ -1657,6 +1657,7 @@ export function useAppController() {
     : historySubTab === "partidos" ? "partidos"
     : historySubTab === "jugadores" ? "jugadores"
     : historySubTab === "entrenamientos" ? "entrenos"
+    : historySubTab === "informes" ? "informes"
     : "analisis";
   const navigate = (id) => {
     if (id === "inicio") setView("inicio");
@@ -1665,7 +1666,8 @@ export function useAppController() {
     else if (id === "partidos") { setHistorySubTab("partidos"); setView("historial"); }
     else if (id === "jugadores") { setHistorySubTab("jugadores"); setView("historial"); }
     else if (id === "entrenos") { setHistorySubTab("entrenamientos"); setView("historial"); }
-    else if (id === "analisis") { if (!["analisis", "estadisticas", "zonas", "informes"].includes(historySubTab)) setHistorySubTab("analisis"); setView("historial"); }
+    else if (id === "informes") { setHistorySubTab("informes"); setView("historial"); }
+    else if (id === "analisis") { if (!["analisis", "estadisticas", "zonas"].includes(historySubTab)) setHistorySubTab("analisis"); setView("historial"); }
     if (typeof window !== "undefined" && typeof window.scrollTo === "function") window.scrollTo(0, 0);
   };
 
