@@ -392,7 +392,7 @@ export function keyFacts(m, others = [], max = 3) {
     const counts = new Map();
     list.forEach((g) => counts.set(g.phase || "Sin fase", (counts.get(g.phase || "Sin fase") || 0) + 1));
     const [phase, c] = [...counts.entries()].sort((a, b) => b[1] - a[1])[0];
-    if (c / list.length >= 0.5) facts.push({ score: 2 + c / list.length, tone: type === "against" ? "negative" : "positive", text: `${c} de ${list.length} goles ${type === "against" ? "en contra" : "a favor"} llegaron en ${phaseLabel(phase)}.` });
+    if (c >= 2 && c / list.length >= 0.5) facts.push({ score: 2 + c / list.length, tone: type === "against" ? "negative" : "positive", text: `${c} de ${list.length} goles ${type === "against" ? "en contra" : "a favor"} llegaron en ${phaseLabel(phase)}.` });
   });
   const dt = dangerousTurnovers(m);
   if (dt.length) facts.push({ score: 3 + dt.length, tone: "negative", text: `${dt.length} pérdida${dt.length === 1 ? "" : "s"} en campo propio acab${dt.length === 1 ? "ó" : "aron"} en gol rival en menos de 20".` });
@@ -408,12 +408,11 @@ export function keyFacts(m, others = [], max = 3) {
       if (rel < 0.3 || (k !== "efficiency" && Math.abs(d) < 2)) return;
       const def = metricDef(k);
       const good = (d > 0) === (def.better === "high");
-      const label = def.label.toLowerCase();
       facts.push({
         score: 1 + rel, tone: good ? "positive" : "negative",
         text: k === "efficiency"
           ? `Eficacia del ${Math.round(v * 100)}% (media ${Math.round(a * 100)}%).`
-          : `${round1(v)} ${label}: ${Math.abs(round1(d)).toString().replace(".", ",")} ${d > 0 ? "más" : "menos"} que la media (${String(round1(a)).replace(".", ",")}).`,
+          : `${def.label}: ${String(round1(v)).replace(".", ",")}, ${String(Math.abs(round1(d))).replace(".", ",")} ${d > 0 ? "más" : "menos"} que la media (${String(round1(a)).replace(".", ",")}).`,
       });
     });
   }

@@ -1175,6 +1175,15 @@ export function useAppController() {
   // guardado en el Historial: en vez de bump() sobre el estado en vivo,
   // ajusta directamente los goles del jugador en las filas guardadas (total
   // y la parte en que se marcó) y persiste el partido entero.
+  // Guardar un partido ya guardado tras corregirlo (editor de acciones, RPE,
+  // acta). Se sustituye entero por su versión corregida.
+  const updateSavedMatch = async (updated) => {
+    if (!updated || !updated.date || !activeTeamId) return;
+    try { await storage.set(`matches:${activeTeamId}:${updated.date}`, JSON.stringify(updated)); showToast("Partido actualizado"); }
+    catch (e) { showToast("No se pudo guardar el partido"); }
+    loadHistoryFor(activeTeamId);
+  };
+
   const saveSavedGoalEdit = async (patch) => {
     if (!editingSavedGoal) return;
     const { match, event } = editingSavedGoal;
@@ -1667,7 +1676,7 @@ export function useAppController() {
     else if (id === "jugadores") { setHistorySubTab("jugadores"); setView("historial"); }
     else if (id === "entrenos") { setHistorySubTab("entrenamientos"); setView("historial"); }
     else if (id === "informes") { setHistorySubTab("informes"); setView("historial"); }
-    else if (id === "analisis") { if (!["analisis", "estadisticas", "zonas"].includes(historySubTab)) setHistorySubTab("analisis"); setView("historial"); }
+    else if (id === "analisis") { if (!["analisis", "estadisticas", "zonas", "v-entrenador", "v-analista", "v-direccion", "v-fisico", "v-anotador"].includes(historySubTab)) setHistorySubTab("analisis"); setView("historial"); }
     if (typeof window !== "undefined" && typeof window.scrollTo === "function") window.scrollTo(0, 0);
   };
 
@@ -1751,6 +1760,7 @@ export function useAppController() {
     handleTeamColors,
     handleTeamConfig,
     importRoster,
+    updateSavedMatch,
     teamConfig,
     overtimeLength,
     historySubTab,

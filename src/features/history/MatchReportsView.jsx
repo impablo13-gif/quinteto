@@ -7,7 +7,7 @@
  *     análisis de vídeo y de planificación compatibles)
  * y un paquete con todos los partidos filtrados en un solo .json. */
 import { useState } from "react";
-import { Braces, FileDown, FileText, Package, Table } from "lucide-react";
+import { Braces, FileDown, FileText, Package, Table, UserRound } from "lucide-react";
 import { T } from "../../theme/theme.js";
 import { Button } from "../../ui/kit.jsx";
 import { buildMatchReportHtml, buildMatchJsonPayload } from "../../reports/matchReport.js";
@@ -17,8 +17,13 @@ import { downloadTextFile, dateLabelOf, sanitizeFileName } from "../../lib/files
 import { BACKUP_FORMAT, BACKUP_VERSION } from "../../data/formats.js";
 import { BRAND } from "../../brand/brand.js";
 import { competitionOf, seasonOf } from "../../domain/filters.js";
+import { ROLES, buildRoleReportHtml } from "../../reports/roleReport.js";
+import { useObjectives } from "./visiones/CoachView.jsx";
 
-export function MatchReportsView({ matches, teamId, teamName, teamCrest, teamColors, rosterPlayers }) {
+export function MatchReportsView({ matches, teamId, teamName, teamCrest, teamColors, rosterPlayers, trainings = [] }) {
+  const [role, setRole] = useState("entrenador");
+  const [objectives] = useObjectives(teamId);
+  const roleDef = ROLES.find((r) => r.key === role);
   const [busy, setBusy] = useState(null); // `${date}:${kind}` mientras se genera un PDF
   const [error, setError] = useState("");
   const sorted = [...matches].sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -31,6 +36,15 @@ export function MatchReportsView({ matches, teamId, teamName, teamCrest, teamCol
     try {
       const html = buildMatchReportHtml(m, teamName, rosterPlayers, teamCrest, teamColors, { summary });
       await exportReportToPdf(html, `${base(m)}_${summary ? "resumen" : "informe"}.pdf`);
+    } catch (e) { setError("No se pudo generar el PDF. Prueba otra vez."); }
+    setBusy(null);
+  };
+  const rolePdf = async (m) => {
+    if (busy) return;
+    setBusy(`${m.date}:rol`); setError("");
+    try {
+      const html = buildRoleReportHtml({ role, match: m, season: matches, teamName, teamColors, objectives, trainings });
+      await exportReportToPdf(html, `${base(m)}_informe_${role}.pdf`);
     } catch (e) { setError("No se pudo generar el PDF. Prueba otra vez."); }
     setBusy(null);
   };
@@ -57,6 +71,11 @@ export function MatchReportsView({ matches, teamId, teamName, teamCrest, teamCol
         <div style={{ fontSize: 12.5, color: T.dim, lineHeight: 1.5, flex: "1 1 260px" }}>
           Cada partido con su informe en PDF (completo o resumido), sus datos en CSV y su archivo <b style={{ color: T.text }}>.json</b> para cargarlo en tu herramienta de análisis de vídeo (cortes) o de planificación.
         </div>
+        <label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: T.dim }}>Informe por perfil
+          <select value={role} onChange={(e) => setRole(e.target.value)} style={{ background: T.surface2, border: `1px solid ${T.line}`, borderRadius: 8, color: T.text, padding: "6px 8px", minHeight: 36 }}>
+            {ROLES.map((r) => <option key={r.key} value={r.key}>{r.label}</option>)}
+          </select>
+        </label>
         <Button size="sm" variant="primary" icon={Package} onClick={pack} title="Un solo .json con todos los partidos de la lista">Paquete .json ({sorted.length})</Button>
       </div>
       {error && <div role="alert" style={{ color: T.negative, fontSize: 12 }}>{error}</div>}
@@ -78,6 +97,7 @@ export function MatchReportsView({ matches, teamId, teamName, teamCrest, teamCol
             <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
               <Button size="sm" variant="secondary" icon={FileDown} onClick={() => pdf(m, false)} disabled={!!busy}>{busy === `${m.date}:pdf` ? "Generando…" : "PDF completo"}</Button>
               <Button size="sm" variant="ghost" icon={FileText} onClick={() => pdf(m, true)} disabled={!!busy}>{busy === `${m.date}:res` ? "Generando…" : "PDF resumido"}</Button>
+              <Button size="sm" variant="ghost" icon={UserRound} onClick={() => rolePdf(m)} disabled={!!busy} title={roleDef.hint}>{busy === `${m.date}:rol` ? "Generando…" : `PDF ${roleDef.label.toLowerCase()}`}</Button>
               <Button size="sm" variant="ghost" icon={Table} onClick={() => downloadTextFile(matchEventsCsv(m), `${base(m)}_eventos.csv`, "text/csv;charset=utf-8")} title="Una fila por evento, en orden de juego, con el segundo de partido">CSV eventos</Button>
               <Button size="sm" variant="ghost" icon={Table} onClick={() => downloadTextFile(matchPlayersCsv(m), `${base(m)}_jugadores.csv`, "text/csv;charset=utf-8")}>CSV jugadores</Button>
               <Button size="sm" variant="ghost" icon={Braces} onClick={() => json(m)} title="Datos completos del partido para otras herramientas">JSON</Button>

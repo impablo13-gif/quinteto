@@ -11,8 +11,13 @@ import { SeasonPlayersView } from "./SeasonPlayersView.jsx";
 import { SeasonZonesView } from "./SeasonZonesView.jsx";
 import { HeadToHead, MatchFilters } from "./MatchFilters.jsx";
 import { MatchReportsView } from "./MatchReportsView.jsx";
+import { CoachView } from "./visiones/CoachView.jsx";
+import { AnalystView } from "./visiones/AnalystView.jsx";
+import { DirectionView } from "./visiones/DirectionView.jsx";
+import { PhysicalView } from "./visiones/PhysicalView.jsx";
+import { ScorerView } from "./visiones/ScorerView.jsx";
 import { ALL, NO_COMPETITION, filterMatches } from "../../domain/filters.js";
-export function HistoryView({ matches: allMatches, trainings, teamId, teamName, teamCrest, teamColors, rosterPlayers, subTab, onSubTabChange, onExport, onDeleteMatch, onCreateReport, onEditGoal, onNewTraining }) {
+export function HistoryView({ teams = [], onUpdateMatch, matches: allMatches, trainings, teamId, teamName, teamCrest, teamColors, rosterPlayers, subTab, onSubTabChange, onExport, onDeleteMatch, onCreateReport, onEditGoal, onNewTraining }) {
   const [open, setOpen] = useState(null);
   // Temporada / competición / rival. Por defecto todo: se ve lo de siempre.
   const [filters, setFilters] = useState({ season: ALL, competition: ALL, rival: ALL });
@@ -32,7 +37,7 @@ export function HistoryView({ matches: allMatches, trainings, teamId, teamName, 
       right: total > 0 && <Button size="sm" variant="ghost" icon={FileSpreadsheet} onClick={onExport}>Exportar a Excel</Button>,
     },
     jugadores: { title: "Jugadores", subtitle: "Totales por periodo, ficha de cada jugador y conclusiones" },
-    analisis: { title: "Análisis", subtitle: "Temporada, fases de gol y mapa de zonas" },
+    analisis: { title: "Análisis", subtitle: "Temporada, fases de gol, zonas y la mirada de cada perfil: entrenador, analista, dirección, físico y anotador" },
     informes: { title: "Informes", subtitle: "El informe en PDF de cada partido, sus datos en CSV y su archivo .json" },
     entrenos: {
       title: "Entrenos",
@@ -54,7 +59,7 @@ export function HistoryView({ matches: allMatches, trainings, teamId, teamName, 
             label="Tipo de análisis"
             value={subTab}
             onChange={onSubTabChange}
-            options={[{ value: "analisis", label: "Temporada" }, { value: "estadisticas", label: "Fases de gol" }, { value: "zonas", label: "Zonas" }]}
+            options={[{ value: "analisis", label: "Temporada" }, { value: "estadisticas", label: "Fases de gol" }, { value: "zonas", label: "Zonas" }, { value: "v-entrenador", label: "Entrenador" }, { value: "v-analista", label: "Analista" }, { value: "v-direccion", label: "Dirección" }, { value: "v-fisico", label: "Físico" }, { value: "v-anotador", label: "Anotador" }]}
           />
         </div>
       )}
@@ -140,7 +145,13 @@ export function HistoryView({ matches: allMatches, trainings, teamId, teamName, 
 
       {subTab === "jugadores" && !hideEmpty && <SeasonPlayersView matches={matches} teamId={teamId} teamName={teamName} teamColors={teamColors} scopeLabel={scopeLabel} />}
 
-      {subTab === "informes" && !hideEmpty && <MatchReportsView matches={matches} teamId={teamId} teamName={teamName} teamCrest={teamCrest} teamColors={teamColors} rosterPlayers={rosterPlayers} />}
+      {subTab === "informes" && !hideEmpty && <MatchReportsView matches={matches} teamId={teamId} teamName={teamName} teamCrest={teamCrest} teamColors={teamColors} rosterPlayers={rosterPlayers} trainings={trainings} />}
+
+      {subTab === "v-entrenador" && !hideEmpty && matches.length > 0 && <CoachView matches={matches} teamId={teamId} />}
+      {subTab === "v-analista" && !hideEmpty && matches.length > 0 && <AnalystView matches={matches} teamName={teamName} />}
+      {subTab === "v-direccion" && !hideEmpty && matches.length > 0 && <DirectionView matches={matches} teams={teams} />}
+      {subTab === "v-fisico" && !hideEmpty && matches.length > 0 && <PhysicalView matches={matches} trainings={trainings} onUpdateMatch={onUpdateMatch} />}
+      {subTab === "v-anotador" && !hideEmpty && matches.length > 0 && <ScorerView matches={matches} onUpdateMatch={onUpdateMatch} />}
 
       {subTab === "analisis" && !hideEmpty && <SeasonAnalysisView matches={matches} teamId={teamId} teamName={teamName} teamColors={teamColors} scopeLabel={scopeLabel} />}
     </div>

@@ -110,6 +110,7 @@ export default function App() {
     handleTeamColors,
     handleTeamConfig,
     importRoster,
+    updateSavedMatch,
     teamConfig,
     overtimeLength,
     historySubTab,
@@ -569,7 +570,7 @@ export default function App() {
 
         {view === "historial" && (
           <HistoryView
-            matches={savedMatches} trainings={savedTrainings} teamId={activeTeamId} teamName={activeTeam.name} teamCrest={activeTeam.crest} teamColors={activeTeam.colors}
+            teams={teams} onUpdateMatch={updateSavedMatch} matches={savedMatches} trainings={savedTrainings} teamId={activeTeamId} teamName={activeTeam.name} teamCrest={activeTeam.crest} teamColors={activeTeam.colors}
             rosterPlayers={players}
             subTab={historySubTab} onSubTabChange={setHistorySubTab}
             onExport={() => exportClubDataToExcel(savedMatches, savedTrainings, activeTeam.name)}
