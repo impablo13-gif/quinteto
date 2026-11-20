@@ -164,14 +164,14 @@ export function PlayerCard({ player, stats, onCourt, accumulatedSeconds, stintSe
   // abajo para que el tiempo y el nombre se lean). En el banquillo, como
   // siempre: foto pequeña y tarjeta apagada.
   const photo = onCourt ? safeImgSrc(player.photo) : "";
-  const photoBg = photo ? `linear-gradient(180deg, ${alpha(T.ink, 0.05)} 0%, ${alpha(T.ink, 0.35)} 40%, ${alpha(T.ink, 0.9)} 78%), url("${photo}") center 18% / cover no-repeat` : null;
+  const photoBg = photo ? `linear-gradient(180deg, ${alpha(T.ink, 0)} 0%, ${alpha(T.ink, 0)} 42%, ${alpha(T.ink, 0.55)} 66%, ${alpha(T.ink, 0.88)} 100%), url("${photo}") center 15% / cover no-repeat` : null;
   return (
     <div
       onClick={onTap}
       className={`tap-target${armed ? " armable" : ""}`}
       style={{
         background: photoBg || cardBg,
-        ...(photo ? { minHeight: compact ? 150 : 210, display: "flex", flexDirection: "column", justifyContent: "flex-end" } : {}),
+        ...(photo ? { minHeight: compact ? 190 : 270, display: "flex", flexDirection: "column", justifyContent: "flex-end" } : {}),
         border: `${compact ? 2 : 3}px solid ${borderTint}`,
         boxShadow: onCourt ? `inset 0 ${compact ? 3 : 4}px 0 ${stateColor}, 0 0 0 1px rgba(${glowColor},0.25), 0 6px 18px rgba(${glowColor},0.12)` : "none",
         borderRadius: 14, padding: compact ? 8 : 12, cursor: "pointer", minWidth: 0,

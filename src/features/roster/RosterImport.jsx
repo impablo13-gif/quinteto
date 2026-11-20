@@ -55,7 +55,7 @@ export function RosterImport({ roster, onApply, replaceLocked }) {
                     <div key={i} style={{ display: "flex", gap: 10, padding: "6px 10px", borderTop: i ? `1px solid ${T.line}` : "none", fontSize: 13 }}>
                       <span style={{ width: 28, color: T.accent, fontWeight: 700, fontVariantNumeric: "tabular-nums" }}>{p.number ?? "—"}</span>
                       <span style={{ flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.name}</span>
-                      <span style={{ color: T.dim, fontSize: 12 }}>{POS_LABEL[p.position]}{p.photo ? " · foto" : ""}</span>
+                      <span style={{ color: T.dim, fontSize: 12 }}>{p.position ? POS_LABEL[p.position] : "sin posición"}{p.photo ? " · foto" : ""}</span>
                     </div>
                   ))}
                 </div>

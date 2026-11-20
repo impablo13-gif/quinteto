@@ -35,7 +35,10 @@ export function toPlayer(o) {
   if (!name) return null;
   const rawNum = o.number ?? o.dorsal ?? o.numero ?? o["número"];
   const n = parseInt(rawNum, 10);
-  const position = normalizePosition(o.position ?? o.posicion ?? o["posición"], o.isGK === true || o.portero === true);
+  // Sin posición en el archivo: null (al unir se conserva la que ya tuviera).
+  const rawPos = o.position ?? o.posicion ?? o["posición"];
+  const gk = o.isGK === true || o.portero === true;
+  const position = gk || (rawPos != null && String(rawPos).trim()) ? normalizePosition(rawPos, gk) : null;
   return { name, number: Number.isFinite(n) && n >= 0 && n < 1000 ? n : null, position, photo: safePhoto(o.photo ?? o.foto) };
 }
 
@@ -109,7 +112,8 @@ export function mergeRoster(current, incoming, mode = "merge", newId = () => `p$
     seen.add(k);
     const old = byName.get(k);
     if (old) {
-      const next = { ...old, position: inc.position, isGK: inc.position === "POR" };
+      const next = { ...old };
+      if (inc.position) { next.position = inc.position; next.isGK = inc.position === "POR"; }
       if (inc.number != null) next.number = inc.number;
       if (inc.photo) next.photo = inc.photo;
       if (JSON.stringify(next) !== JSON.stringify(old)) updated += 1;
@@ -118,7 +122,8 @@ export function mergeRoster(current, incoming, mode = "merge", newId = () => `p$
       let number = inc.number;
       if (number == null) { number = 1; while (usedNumbers.has(number)) number += 1; }
       usedNumbers.add(number);
-      fromFile.push({ id: newId(), name: inc.name, number, position: inc.position, isGK: inc.position === "POR", photo: inc.photo || null });
+      const position = inc.position || "ALA";
+      fromFile.push({ id: newId(), name: inc.name, number, position, isGK: position === "POR", photo: inc.photo || null });
       added += 1;
     }
   });

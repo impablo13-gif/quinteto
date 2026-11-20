@@ -15,10 +15,10 @@ test("posiciones en español o inglés", () => {
 test("lista simple, objeto con jugadores y campos variados", () => {
   const a = parseRosterFile([{ nombre: "Ana", apellidos: "Pérez", dorsal: "7", posicion: "Cierre", foto: PHOTO }, { name: "Bea", number: 9 }, { dorsal: 3 }, null]);
   assert.equal(a.groups.length, 1);
-  assert.deepEqual(a.groups[0].players, [{ name: "Ana Pérez", number: 7, position: "CIE", photo: PHOTO }, { name: "Bea", number: 9, position: "ALA", photo: null }]);
+  assert.deepEqual(a.groups[0].players, [{ name: "Ana Pérez", number: 7, position: "CIE", photo: PHOTO }, { name: "Bea", number: 9, position: null, photo: null }]);
   const b = parseRosterFile({ equipo: "Juvenil", jugadores: [{ nombre: "<b>Cris</b>", dorsal: "x", foto: "javascript:alert(1)" }] });
   assert.equal(b.groups[0].label, "Juvenil");
-  assert.deepEqual(b.groups[0].players[0], { name: "bCris/b", number: null, position: "ALA", photo: null }, "sin HTML, sin dorsal inválido, sin fotos peligrosas");
+  assert.deepEqual(b.groups[0].players[0], { name: "bCris/b", number: null, position: null, photo: null }, "sin HTML, sin dorsal inválido, sin fotos peligrosas");
   assert.deepEqual(parseRosterFile({ hola: 1 }).groups, []);
   assert.equal(toPlayer({ name: "   " }), null);
 });
@@ -60,6 +60,10 @@ test("unir: actualiza por nombre, añade nuevos, no borra a nadie", () => {
   assert.deepEqual(rep.roster.map((p) => p.name), ["Ana Pérez", "Cris"]);
   assert.equal(rep.roster[0].id, "p1");
   assert.equal(rep.removed, 1);
+  const keep = mergeRoster(current, [{ name: "Bea", number: null, position: null, photo: null }], "merge", id);
+  assert.equal(keep.roster[1].position, "CIE", "sin posición en el archivo se conserva la que tenía");
+  assert.equal(keep.updated, 0);
+  assert.equal(mergeRoster([], [{ name: "Nuevo", number: 3, position: null, photo: null }], "merge", id).roster[0].position, "ALA");
 });
 
 test("plantilla de ejemplo de un equipo nuevo", () => {
